@@ -2,7 +2,7 @@
 import { PitchStyle } from '../types';
 
 // Access API Key
-const API_KEY = process.env.API_KEY;
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 // Helper to decode base64 to Uint8Array
 function decode(base64: string) {
