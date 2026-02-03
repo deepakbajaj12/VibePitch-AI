@@ -1,20 +1,28 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# VibePitch AI
 
-# Run and deploy your AI Studio app
+VibePitch AI turns a single sentence into an emotionally rich spoken pitch.
 
-This contains everything you need to run your app locally.
+Users enter a short idea, choose a vibe (startup pitch, game trailer, scientific explainer, or hype), and instantly hear their idea brought to life using AI-generated scripts and voice synthesis.
 
-View your app in AI Studio: https://ai.studio/apps/drive/124aEaohNT7uZpYruZUSHyoddgopQ4wT_
+## What it does
+- Enter a 1–2 line idea
+- Select a pitch style (vibe)
+- AI generates a short spoken script
+- Script is converted into expressive voice and played instantly
 
-## Run Locally
+## Tech stack
+- Gemini (text generation)
+- ElevenLabs (voice synthesis)
+- Web-based frontend (AI Studio app)
 
-**Prerequisites:**  Node.js
+## Demo
+- Live demo: [add your deployed link here]
+- Demo video: see Devpost submission
 
+## Run locally
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**Prerequisites:** Node.js
+
+1. Install dependencies  
+   ```bash
+   npm install
