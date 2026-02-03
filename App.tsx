@@ -60,7 +60,7 @@ const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="mt-auto pt-12 text-gray-600 text-sm">
-        Powered by Gemini 3 Flash & 2.5 Flash TTS
+        Powered by Google Gemini AI
       </footer>
     </div>
   );

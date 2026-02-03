@@ -124,48 +124,75 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
     [PitchStyle.CRAZY_HYPE]: 'Charon'
   };
 
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text }] }],
-          generationConfig: {
-            responseModalities: ["AUDIO"],
-            speechConfig: {
-              voiceConfig: {
-                prebuiltVoiceConfig: { voiceName: voiceMap[style] },
+  // Models to try for Audio generation in order of preference
+  // gemini-2.0-flash-exp: Best quality, experimental
+  // gemini-1.5-flash: Standard, wide availability, supports audio
+  // gemini-1.5-flash-latest: Latest alias
+  // gemini-1.5-pro: Higher quality but potentially slower/quota limits
+  const modelsToTry = ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro'];
+
+  let lastError: any;
+
+  for (const model of modelsToTry) {
+    try {
+      console.log(`Attempting Audio Generation with model: ${model}`);
+      
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text }] }],
+            generationConfig: {
+              responseModalities: ["AUDIO"],
+              speechConfig: {
+                voiceConfig: {
+                  prebuiltVoiceConfig: { voiceName: voiceMap[style] },
+                },
               },
             },
-          },
-        }),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        // If 404 (Not Found) or 400 (Bad Request - likely model doesn't support audio), try next
+        if (response.status === 404 || response.status === 400) {
+           console.warn(`Model ${model} not available or doesn't support audio. Trying next...`);
+           lastError = errorData;
+           continue; 
+        }
+        // For other errors (403 quota, 500 server), throw immediately or maybe continue? 
+        // Let's assume strict fail for auth/quota issues, but continue for model issues.
+        throw new Error(errorData.error?.message || `Audio generation failed with ${model}`);
       }
-    );
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error("Gemini Audio Error:", errorData);
-      throw new Error(errorData.error?.message || "Audio generation failed.");
+      const data = await response.json();
+      const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+      
+      if (!base64Audio) {
+         throw new Error(`No audio data in response from ${model}`);
+      }
+
+      const rawPcm = decode(base64Audio);
+      const wavHeader = createWavHeader(rawPcm.length, 24000);
+      
+      const finalWav = new Uint8Array(wavHeader.length + rawPcm.length);
+      finalWav.set(wavHeader, 0);
+      finalWav.set(rawPcm, wavHeader.length);
+
+      return new Blob([finalWav], { type: 'audio/wav' });
+
+    } catch (error) {
+      console.warn(`Audio generation failed for ${model}:`, error);
+      lastError = error;
+      // Continue loop to next model
     }
-
-    const data = await response.json();
-    const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-    
-    if (!base64Audio) throw new Error("No audio returned from Gemini.");
-
-    const rawPcm = decode(base64Audio);
-    const wavHeader = createWavHeader(rawPcm.length, 24000);
-    
-    const finalWav = new Uint8Array(wavHeader.length + rawPcm.length);
-    finalWav.set(wavHeader, 0);
-    finalWav.set(rawPcm, wavHeader.length);
-
-    return new Blob([finalWav], { type: 'audio/wav' });
-
-  } catch (error) {
-    console.error("Audio generation failed:", error);
-    throw error;
   }
+
+  // If we get here, all models failed.
+  console.error("All audio models failed. Last error:", lastError);
+  throw new Error("Could not generate audio with any available Gemini model. Please check if your API key supports 'gemini-2.0-flash-exp' or 'gemini-1.5-flash'.");
 }
