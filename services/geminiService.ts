@@ -64,7 +64,7 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
   Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,8 +76,9 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
   );
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error?.message || "Failed to generate script");
+    const errorData = await response.json().catch(() => ({}));
+    console.error("Gemini Script Error:", errorData);
+    throw new Error(errorData.error?.message || `Script generation failed (${response.status}). Check API Key.`);
   }
 
   const data = await response.json();
@@ -93,41 +94,48 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
     [PitchStyle.CRAZY_HYPE]: 'Charon'
   };
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text }] }],
-        generationConfig: {
-          responseModalities: ["AUDIO"],
-          speechConfig: {
-            voiceConfig: {
-              prebuiltVoiceConfig: { voiceName: voiceMap[style] },
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text }] }],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: voiceMap[style] },
+              },
             },
           },
-        },
-      }),
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Gemini Audio Error:", errorData);
+      throw new Error(errorData.error?.message || "Audio generation failed.");
     }
-  );
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error?.message || "Failed to generate speech");
+    const data = await response.json();
+    const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    
+    if (!base64Audio) throw new Error("No audio returned from Gemini.");
+
+    const rawPcm = decode(base64Audio);
+    const wavHeader = createWavHeader(rawPcm.length, 24000);
+    
+    const finalWav = new Uint8Array(wavHeader.length + rawPcm.length);
+    finalWav.set(wavHeader, 0);
+    finalWav.set(rawPcm, wavHeader.length);
+
+    return new Blob([finalWav], { type: 'audio/wav' });
+
+  } catch (error) {
+    console.error("Audio generation failed:", error);
+    throw error;
   }
-
-  const data = await response.json();
-  const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-  
-  if (!base64Audio) throw new Error("No audio returned from Gemini TTS");
-
-  const rawPcm = decode(base64Audio);
-  const wavHeader = createWavHeader(rawPcm.length, 24000);
-  
-  const finalWav = new Uint8Array(wavHeader.length + rawPcm.length);
-  finalWav.set(wavHeader, 0);
-  finalWav.set(rawPcm, wavHeader.length);
-
-  return new Blob([finalWav], { type: 'audio/wav' });
 }
