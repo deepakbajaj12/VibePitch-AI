@@ -64,7 +64,7 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
   Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -78,6 +78,18 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     console.error("Gemini Script Error:", errorData);
+    
+    // Debug: List available models if NOT FOUND
+    if (response.status === 404) {
+      try {
+        const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${API_KEY}`);
+        const listData = await listResponse.json();
+        console.log("AVAILABLE MODELS (Debug):", listData);
+      } catch (e) {
+        console.error("Could not list models:", e);
+      }
+    }
+
     throw new Error(errorData.error?.message || `Script generation failed (${response.status}). Check API Key.`);
   }
 
