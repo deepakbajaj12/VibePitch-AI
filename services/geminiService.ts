@@ -63,8 +63,10 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
   Instruction: ${stylePrompts[style]}.
   Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
 
+  // Fallback to 'gemini-pro' which is the legacy alias for 1.0 Pro.
+  // If even this fails, the user's API key might have restriction issues or need billing enabled (though Flash is free tier).
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
