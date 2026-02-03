@@ -1,6 +1,8 @@
 
-import { GoogleGenAI, Modality } from "@google/genai";
 import { PitchStyle } from '../types';
+
+// Access API Key
+const API_KEY = process.env.API_KEY;
 
 // Helper to decode base64 to Uint8Array
 function decode(base64: string) {
@@ -49,8 +51,6 @@ function createWavHeader(dataLength: number, sampleRate: number): Uint8Array {
 }
 
 export async function generatePitchScript(idea: string, style: PitchStyle): Promise<string> {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  
   const stylePrompts = {
     [PitchStyle.STARTUP]: "Professional, visionary, and energetic. Focus on the 'problem/solution' narrative. Use terms like 'scalability', 'innovation', and 'future'.",
     [PitchStyle.GAME_TRAILER]: "Epic, cinematic, and dramatic. Use intense pauses, heavy adjectives, and a 'coming soon' vibe. Imagine a movie trailer voice.",
@@ -63,21 +63,28 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
   Instruction: ${stylePrompts[style]}.
   Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: prompt,
-    config: {
-      temperature: 0.8,
-      topP: 0.95,
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.8, topP: 0.95 }
+      }),
     }
-  });
+  );
 
-  return response.text || "Failed to generate script.";
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error?.message || "Failed to generate script");
+  }
+
+  const data = await response.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "Failed to generate script.";
 }
 
 export async function generateSpeech(text: string, style: PitchStyle): Promise<Blob> {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
   // Map pitch style to best voice
   const voiceMap = {
     [PitchStyle.STARTUP]: 'Kore',
@@ -86,20 +93,33 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
     [PitchStyle.CRAZY_HYPE]: 'Charon'
   };
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash-preview-tts",
-    contents: [{ parts: [{ text }] }],
-    config: {
-      responseModalities: [Modality.AUDIO],
-      speechConfig: {
-        voiceConfig: {
-          prebuiltVoiceConfig: { voiceName: voiceMap[style] },
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text }] }],
+        generationConfig: {
+          responseModalities: ["AUDIO"],
+          speechConfig: {
+            voiceConfig: {
+              prebuiltVoiceConfig: { voiceName: voiceMap[style] },
+            },
+          },
         },
-      },
-    },
-  });
+      }),
+    }
+  );
 
-  const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error?.message || "Failed to generate speech");
+  }
+
+  const data = await response.json();
+  const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+  
   if (!base64Audio) throw new Error("No audio returned from Gemini TTS");
 
   const rawPcm = decode(base64Audio);
