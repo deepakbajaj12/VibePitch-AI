@@ -193,6 +193,34 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
   }
 
   // If we get here, all models failed.
-  console.error("All audio models failed. Last error:", lastError);
-  throw new Error("Could not generate audio with any available Gemini model. Please check if your API key supports 'gemini-2.0-flash-exp' or 'gemini-1.5-flash'.");
+  console.error("All Gemini audio models failed. Falling back to Browser TTS.");
+  return generateSpeechFallback(text);
+}
+
+// Fallback to Web Speech API (Browser TTS)
+function generateSpeechFallback(text: string): Promise<Blob> {
+  return new Promise((resolve) => {
+    // We cannot easily create a Blob from window.speechSynthesis.
+    // However, to keep the UI working without crashing, we can:
+    // 1. Play the audio directly here using the browser API.
+    // 2. Return a dummy Blob so the UI doesn't crash (though the AudioPlayer visualizer won't work perfectly).
+    
+    // Choose approach 1 for user experience: Speak it immediately.
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.volume = 1;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    // Try to select a better voice
+    const voices = window.speechSynthesis.getVoices();
+    // Prefer Google voices or English voices
+    const preferredVoice = voices.find(v => v.name.includes("Google US English") || v.name.includes("Google") || v.lang === "en-US");
+    if (preferredVoice) utterance.voice = preferredVoice;
+
+    window.speechSynthesis.speak(utterance);
+    
+    // Return an empty blob to satisfy the type signature and prevent UI crashes.
+    // The user hears the audio via the browser, and the "AudioPlayer" component will exist but be silent.
+    resolve(new Blob([], { type: 'audio/wav' })); 
+  });
 }
