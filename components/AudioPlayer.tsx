@@ -1,5 +1,6 @@
 
 import React, { useRef, useEffect, useState } from 'react';
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 interface AudioPlayerProps {
   script: string;
@@ -80,9 +81,28 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ script, audioBlob }) => {
         <div className="w-full sm:w-auto flex-grow">
         {isFallback ? (
           <div className="flex flex-col items-center gap-2 w-full">
-            <p className="text-sm text-yellow-500 mb-2">
-              Note: Using browser TTS because Gemini Audio is unavailable.
-            </p>
+            <Tooltip.Provider>
+              <Tooltip.Root>
+                <div className="flex justify-center items-center gap-2 text-sm text-gray-400 mb-2">
+                  🔊 Voice playback powered by your device
+                  <Tooltip.Trigger asChild>
+                    <button className="text-gray-500 hover:text-white cursor-help">
+                      ℹ️
+                    </button>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="bg-black text-white text-xs px-3 py-2 rounded-lg shadow-lg z-50 border border-gray-700"
+                      sideOffset={6}
+                    >
+                      Using built-in device voice (fallback mode)
+                      <Tooltip.Arrow className="fill-black" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </div>
+              </Tooltip.Root>
+            </Tooltip.Provider>
+
             <button 
               onClick={handleSpeakFallback}
               className="flex items-center gap-2 px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-colors w-full justify-center"

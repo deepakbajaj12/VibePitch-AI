@@ -133,8 +133,13 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
 
   // Models to try for Audio generation in order of preference
   // Only Gemini 2.0 models support Audio Output ('responseModalities': ['AUDIO']).
-  // Gemini 1.5 models do NOT support audio output, so removing them prevents 404/400 errors.
-  const modelsToTry = ['gemini-2.0-flash-exp'];
+  // We list multiple candidates as model names change frequently during preview phases.
+  const modelsToTry = [
+    'gemini-2.0-flash', 
+    'gemini-2.0-flash-exp', 
+    'gemini-2.0-flash-001',
+    'gemini-2.0-pro-exp-02-05' // Recent experimental releases
+  ];
 
   let lastError: any;
 
