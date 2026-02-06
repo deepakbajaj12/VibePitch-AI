@@ -9,6 +9,7 @@ export enum PitchStyle {
 export interface PitchData {
   idea: string;
   style: PitchStyle;
+  intensity: number; // 0 to 100
 }
 
 export interface GeneratedResult {

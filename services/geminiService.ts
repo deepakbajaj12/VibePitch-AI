@@ -76,7 +76,7 @@ async function getBestTextModel(): Promise<string> {
   }
 }
 
-export async function generatePitchScript(idea: string, style: PitchStyle): Promise<string> {
+export async function generatePitchScript(idea: string, style: PitchStyle, intensity: number = 50): Promise<string> {
   const stylePrompts = {
     [PitchStyle.STARTUP]: "Professional, visionary, and energetic. Focus on the 'problem/solution' narrative. Use terms like 'scalability', 'innovation', and 'future'.",
     [PitchStyle.GAME_TRAILER]: "Epic, cinematic, and dramatic. Use intense pauses, heavy adjectives, and a 'coming soon' vibe. Imagine a movie trailer voice.",
@@ -84,8 +84,15 @@ export async function generatePitchScript(idea: string, style: PitchStyle): Prom
     [PitchStyle.CRAZY_HYPE]: "Maximum energy, fast-paced, urban slang, and high enthusiasm. Lots of exclamation marks in feeling. Use 'insane', 'next level', and 'absolute fire'."
   };
 
+  const intensityDesc = intensity > 80 ? "EXTREMELY HYPED AND AGGRESSIVE" 
+    : intensity > 60 ? "Very Energetic and fast"
+    : intensity > 40 ? "Balanced, clear and natural"
+    : intensity > 20 ? "Calm, slow and deliberate"
+    : "Very calm, soft-spoken and ASMR-like";
+
   const prompt = `Turn this idea into a 30-40 second natural spoken script (approx 60-80 words): "${idea}". 
   Style: ${style}.
+  Vibe Intensity: ${intensity}% (${intensityDesc}).
   Instruction: ${stylePrompts[style]}.
   Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
 
