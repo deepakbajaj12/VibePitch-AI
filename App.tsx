@@ -186,9 +186,9 @@ const App: React.FC = () => {
                          <div className="w-16 h-16 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin mb-4"></div>
                          <h3 className="text-xl font-bold text-white">Generating Pitch...</h3>
                          <div className="text-xs font-mono text-indigo-300 space-y-1 text-left w-full pl-8">
-                             <div>> Intensity: {intensity}%</div>
-                             <div>> Style: {style}</div>
-                             <div>> Analyzing Tone...</div>
+                             <div>&gt; Intensity: {intensity}%</div>
+                             <div>&gt; Style: {style}</div>
+                             <div>&gt; Analyzing Tone...</div>
                          </div>
                     </div>
                 ) : (
