@@ -82,8 +82,16 @@ const App: React.FC = () => {
         />
       )}
 
+      <div 
+        className="fixed inset-0 pointer-events-none transition-opacity duration-700 z-0"
+        style={{
+            background: `radial-gradient(circle at 80% 20%, rgba(99, 102, 241, ${intensity * 0.003}) 0%, transparent 50%),
+                         radial-gradient(circle at 20% 80%, rgba(236, 72, 153, ${intensity * 0.003}) 0%, transparent 50%)`
+        }}
+      />
+
       {/* Header */}
-      <div className="text-center mb-12 space-y-4 max-w-2xl relative w-full">
+      <div className="text-center mb-12 space-y-4 max-w-2xl relative w-full z-10">
         {/* Logitech MX Mode Toggle */}
         <div className="absolute top-0 right-0 flex items-center space-x-2 z-20">
            <span className={`text-xs font-bold ${!isMxMode ? 'text-indigo-400' : 'text-gray-600'}`}>WEB</span>
@@ -164,16 +172,32 @@ const App: React.FC = () => {
         <div className="lg:col-span-3 w-full">
             {result ? (
                 <div className="space-y-4">
-                   <div className="bg-gray-900/80 p-6 rounded-2xl border border-gray-700 w-full">
-                        <h3 className="text-white font-bold mb-4 gradient-text">Script Ready</h3>
+                   <div className="bg-gray-900/80 p-6 rounded-2xl border border-gray-700 w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex items-center gap-2 mb-4">
+                             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                             <h3 className="text-white font-bold gradient-text">Script Ready</h3>
+                        </div>
                         <AudioPlayer script={result.script} audioBlob={result.audioBlob} />
                    </div>
                 </div>
             ) : (
-                <div className="h-64 flex flex-col items-center justify-center border-2 border-dashed border-gray-800 rounded-2xl text-gray-600 p-4 text-center">
-                    <span className="text-2xl mb-2">👋</span>
-                    Waiting for Command...
-                </div>
+                loading ? (
+                    <div className="h-64 flex flex-col items-center justify-center border border-indigo-500/30 bg-indigo-900/10 rounded-2xl p-6 text-center space-y-4 animate-pulse-border">
+                         <div className="w-16 h-16 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin mb-4"></div>
+                         <h3 className="text-xl font-bold text-white">Generating Pitch...</h3>
+                         <div className="text-xs font-mono text-indigo-300 space-y-1 text-left w-full pl-8">
+                             <div>> Intensity: {intensity}%</div>
+                             <div>> Style: {style}</div>
+                             <div>> Analyzing Tone...</div>
+                         </div>
+                    </div>
+                ) : (
+                    <div className="h-64 flex flex-col items-center justify-center border-2 border-dashed border-gray-800 rounded-2xl text-gray-600 p-4 text-center group hover:border-gray-700 transition-colors">
+                        <span className="text-4xl mb-4 opacity-50 grayscale group-hover:grayscale-0 transition-all">🎛️</span>
+                        <div className="font-bold text-gray-500">Waiting for Command</div>
+                        <div className="text-xs text-gray-600 mt-2">Adjust Dial & Press GENERATE</div>
+                    </div>
+                )
             )}
         </div>
         
