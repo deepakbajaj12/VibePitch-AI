@@ -3,16 +3,25 @@ import React, { useState, useEffect } from 'react';
 import { PitchStyle, PitchData } from '../types';
 
 interface PitchFormProps {
-  onSubmit: (data: PitchData) => void;
+  idea: string;
+  setIdea: (val: string) => void;
+  style: PitchStyle;
+  setStyle: (val: PitchStyle) => void;
+  intensity: number;
+  setIntensity: (val: number) => void;
+  onSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
   isMxMode?: boolean;
 }
 
-const PitchForm: React.FC<PitchFormProps> = ({ onSubmit, isLoading, isMxMode = false }) => {
-  const [idea, setIdea] = useState('');
-  const [style, setStyle] = useState<PitchStyle>(PitchStyle.STARTUP);
-  const [intensity, setIntensity] = useState(50); // 0-100
-
+const PitchForm: React.FC<PitchFormProps> = ({ 
+  idea, setIdea, 
+  style, setStyle, 
+  intensity, setIntensity,
+  onSubmit, 
+  isLoading, 
+  isMxMode = false 
+}) => {
   // Keyboard shortcuts for Logitech MX Keys feel
   useEffect(() => {
     if (!isMxMode) return;
@@ -22,24 +31,17 @@ const PitchForm: React.FC<PitchFormProps> = ({ onSubmit, isLoading, isMxMode = f
       if (document.activeElement?.tagName === 'TEXTAREA') return;
 
       if (e.key === '1') setStyle(PitchStyle.STARTUP);
-      if (e.key === '2') setStyle(PitchStyle.SCIENTIFIC);
-      if (e.key === '3') setStyle(PitchStyle.DRAMATIC);
+      if (e.key === '2') setStyle(PitchStyle.GAME_TRAILER);
+      if (e.key === '3') setStyle(PitchStyle.SCIENTIFIC);
+      if (e.key === '4') setStyle(PitchStyle.CRAZY_HYPE);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isMxMode]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!idea.trim()) return;
-    // intensity is 0-100, we prefer 1-10 scale for the prompt usually, but let's pass as is or normalized
-    // The interface expects numbers. Let's pass 0-100.
-    onSubmit({ idea, style, intensity });
-  };
+  }, [isMxMode, setStyle]);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-xl relative">
+    <form onSubmit={onSubmit} className="space-y-6 w-full max-w-xl relative">
       <div className="space-y-2">
         <label htmlFor="idea" className="block text-sm font-medium text-gray-300">
           Your big idea (1-2 lines)
@@ -60,22 +62,27 @@ const PitchForm: React.FC<PitchFormProps> = ({ onSubmit, isLoading, isMxMode = f
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label htmlFor="style" className="block text-sm font-medium text-gray-300">
-             Vibe Style {isMxMode && <span className="text-xs text-gray-500">(Keys 1-3)</span>}
+             Vibe Style {isMxMode && <span className="text-xs text-gray-500">(Keys 1-4)</span>}
           </label>
-          <select
-            id="style"
-            value={style}
-            onChange={(e) => setStyle(e.target.value as PitchStyle)}
-            className={`w-full px-4 py-3 bg-gray-900 border rounded-xl focus:ring-2 focus:border-transparent transition-all outline-none text-white appearance-none cursor-pointer ${
-                isMxMode ? 'border-gray-600 focus:ring-gray-400' : 'border-gray-700 focus:ring-indigo-500'
-            }`}
-          >
-            {Object.values(PitchStyle).map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="style"
+              value={style}
+              onChange={(e) => setStyle(e.target.value as PitchStyle)}
+              className={`w-full px-4 py-3 bg-gray-900 border rounded-xl focus:ring-2 focus:border-transparent transition-all outline-none text-white appearance-none cursor-pointer ${
+                  isMxMode ? 'border-gray-600 focus:ring-gray-400' : 'border-gray-700 focus:ring-indigo-500'
+              }`}
+            >
+              {Object.values(PitchStyle).map((s) => (
+                <option key={s} value={s} className="bg-gray-900">
+                  {s}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -99,7 +106,7 @@ const PitchForm: React.FC<PitchFormProps> = ({ onSubmit, isLoading, isMxMode = f
       <button
         type="submit"
         disabled={isLoading || !idea.trim()}
-        className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all transform active:scale-95 ${
+        className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all transform active:scale-[0.98] ${
           isLoading
             ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
             : isMxMode 
