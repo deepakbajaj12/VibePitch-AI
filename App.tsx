@@ -191,7 +191,7 @@ const App: React.FC = () => {
                 <p className="text-gray-400 text-sm max-w-md">
                    Install VibePitch Command Console directly to your MX device.
                    <br/>
-                   <span className="text-xs text-gray-500 font-mono mt-1 block">> Mapping: Dial → Intensity | Ring → Scroll Speed</span>
+                   <span className="text-xs text-gray-500 font-mono mt-1 block">&gt; Mapping: Dial → Intensity | Ring → Scroll Speed</span>
                 </p>
             </div>
              <button disabled className="px-6 py-2 bg-gray-800 text-gray-400 rounded-lg font-medium border border-gray-700 cursor-not-allowed whitespace-nowrap flex items-center gap-2">
