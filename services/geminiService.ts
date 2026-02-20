@@ -123,6 +123,18 @@ export async function generatePitchScript(idea: string, style: PitchStyle, inten
 }
 
 export async function generateSpeech(text: string, style: PitchStyle): Promise<Blob> {
+  // Currently, the Gemini API (REST) does not support direct Audio Generation 
+  // with the available stable models (Gemini 2.0 Flash / 2.5 Flash).
+  // The 'native-audio' models require the WebSocket (Live) API.
+  // We will default to Browser TTS for reliability and speed, 
+  // but keep the structure in case a REST-compatible audio model is released.
+  
+  console.log("Using Browser TTS for speech generation (Gemini Audio currently requires WebSocket API).");
+  return generateSpeechFallback(text);
+}
+
+// Deprecated attempt to use Gemini for Audio (kept for reference but unused to avoid errors)
+async function generateSpeechGemini(text: string, style: PitchStyle): Promise<Blob> {
   // Map pitch style to best voice
   const voiceMap = {
     [PitchStyle.STARTUP]: 'Kore',
@@ -133,12 +145,9 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
 
   // Models to try for Audio generation in order of preference
   // Only Gemini 2.0 models support Audio Output ('responseModalities': ['AUDIO']).
-  // We list multiple candidates as model names change frequently during preview phases.
   const modelsToTry = [
-    'gemini-2.0-flash', 
-    'gemini-2.0-flash-exp', 
-    'gemini-2.0-flash-001',
-    'gemini-2.0-pro-exp-02-05' // Recent experimental releases
+    'gemini-2.0-flash-exp', // Often supports experimental features
+    'gemini-2.0-flash'      // Standard model (might not support audio via REST yet)
   ];
 
   let lastError: any;
@@ -167,24 +176,14 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
       );
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        // If 404 (Not Found) or 400 (Bad Request - likely model doesn't support audio), try next
-        if (response.status === 404 || response.status === 400) {
-           console.warn(`Model ${model} not available or doesn't support audio. Trying next...`);
-           lastError = errorData;
-           continue; 
-        }
-        // For other errors (403 quota, 500 server), throw immediately or maybe continue? 
-        // Let's assume strict fail for auth/quota issues, but continue for model issues.
-        throw new Error(errorData.error?.message || `Audio generation failed with ${model}`);
+        // Silent fail for expected unsupported features
+        continue;
       }
 
       const data = await response.json();
       const base64Audio = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
       
-      if (!base64Audio) {
-         throw new Error(`No audio data in response from ${model}`);
-      }
+      if (!base64Audio) continue;
 
       const rawPcm = decode(base64Audio);
       const wavHeader = createWavHeader(rawPcm.length, 24000);
@@ -196,15 +195,10 @@ export async function generateSpeech(text: string, style: PitchStyle): Promise<B
       return new Blob([finalWav], { type: 'audio/wav' });
 
     } catch (error) {
-      console.warn(`Audio generation failed for ${model}:`, error);
-      lastError = error;
-      // Continue loop to next model
+       // Ignore
     }
   }
-
-  // If we get here, all models failed.
-  console.error("All Gemini audio models failed. Falling back to Browser TTS.");
-  return generateSpeechFallback(text);
+  throw new Error("Gemini Audio Generation failed");
 }
 
 // Fallback to Web Speech API (Browser TTS)
