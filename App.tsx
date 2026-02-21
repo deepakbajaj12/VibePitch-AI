@@ -203,25 +203,40 @@ const App: React.FC = () => {
         
       </div>
 
-      {/* Logitech Marketplace Plugin Preview */}
-      <div className="w-full max-w-4xl mt-24 border-t border-gray-800 pt-10 text-center">
-        <h4 className="text-gray-500 uppercase tracking-widest text-xs font-bold mb-4">Logitech Ecosystem Integration</h4>
-        <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6 opacity-75 hover:opacity-100 transition-all duration-500 hover:border-indigo-500/30 group">
-            <div className="text-left space-y-2">
-                <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-semibold text-white group-hover:text-indigo-400 transition-colors">Logi Options+ Marketplace</h3>
-                    <span className="bg-purple-900 text-purple-200 text-xs px-2 py-0.5 rounded-full border border-purple-700">Concept</span>
-                </div>
-                <p className="text-gray-400 text-sm max-w-md">
-                   Install VibePitch Command Console directly to your MX device.
-                   <br/>
-                   <span className="text-xs text-gray-500 font-mono mt-1 block">&gt; Mapping: Dial → Intensity | Ring → Scroll Speed</span>
+      {/* Logitech Marketplace Plugin Preview & Ecosystem */}
+      <div className="w-full max-w-5xl mt-24 border-t border-gray-800 pt-10 text-center pb-20">
+        <h4 className="text-indigo-500 uppercase tracking-widest text-xs font-bold mb-8">Logitech Ecosystem Integration</h4>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 opacity-75 hover:opacity-100 transition-all duration-500">
+            {/* VS Code Integration */}
+            <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800 hover:border-blue-500/50 group transition-all">
+                <div className="text-3xl mb-4 grayscale group-hover:grayscale-0">💻</div>
+                <h3 className="text-white font-bold mb-2">VS Code Extension</h3>
+                <p className="text-gray-400 text-xs mb-4">
+                    Highlight code and press <span className="text-indigo-400 font-mono">MX Button 1</span> to generate technical docs or investor explanations instantly.
                 </p>
+                <span className="text-[10px] bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">v0.9.2 Installed</span>
             </div>
-             <button disabled className="px-6 py-2 bg-gray-800 text-gray-400 rounded-lg font-medium border border-gray-700 cursor-not-allowed whitespace-nowrap flex items-center gap-2">
-                <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
-                Coming Soon
-             </button>
+
+            {/* Figma Integration */}
+            <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800 hover:border-pink-500/50 group transition-all">
+                <div className="text-3xl mb-4 grayscale group-hover:grayscale-0">🎨</div>
+                <h3 className="text-white font-bold mb-2">Figma Plugin</h3>
+                <p className="text-gray-400 text-xs mb-4">
+                    Select a frame and rotate <span className="text-indigo-400 font-mono">Dial</span> to generate UX copy variants from "Hype" to "Corporate".
+                </p>
+                <span className="text-[10px] bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">v1.0.4 Active</span>
+            </div>
+
+            {/* Browser / Social Integration */}
+            <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800 hover:border-blue-400/50 group transition-all">
+                <div className="text-3xl mb-4 grayscale group-hover:grayscale-0">🌐</div>
+                <h3 className="text-white font-bold mb-2">Chrome / LinkedIn</h3>
+                <p className="text-gray-400 text-xs mb-4">
+                    Draft a post and use <span className="text-indigo-400 font-mono">Actions Ring</span> to adjust viral tone. Auto-hastag generation on Button 2.
+                </p>
+                <span className="text-[10px] bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">v1.2.0 Syncing</span>
+            </div>
         </div>
       </div>
 

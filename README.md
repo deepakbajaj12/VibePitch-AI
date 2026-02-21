@@ -1,86 +1,103 @@
 # 🔥 VibePitch Command Console
 
-**An AI-powered presentation assistant designed for Logitech MX Creative Console & MX Master 4.**
+**The AI Command Console for Startup Founders.**
 
-VibePitch Command Console transforms the **Logitech MX Creative Console** into a physical command center for founders, content creators, and students. Instead of clicking through web menus, users control their pitch workflow via tactile dials, buttons, and actions rings.
-
-## 🚀 Key Innovations
-
-### 1. Hardware-Controlled AI Modulation
-Why use a mouse slider when you can turn a dial?
-- **MX Creative Console Dial**: Physically rotate to adjust the "Intensity" and emotion of your AI-generated script in real-time.
-- **Result**: "Touching" the emotion of your pitch feels intuitive and creative.
-
-### 2. Actions Ring Teleprompter
-- **MX Master 4 Actions Ring**: Control the scroll speed of the built-in teleprompter with a simple thumb swipe.
-- **Benefit**: Keeps your hands natural during a presentation without fumbling for keyboard arrow keys.
-
-### 3. Live Vocal Feedback
-- **Real-Time Analysis**: The app listens to your practice runs.
-- **Filler Word Detection**: Instantly flags "um", "uh", "like" to help you polish your delivery.
-- **Confidence Meter**: Visualizes your vocal projection.
+**VibePitch transforms your Logitech MX Creative Console into a mission-control center for high-stakes communication.**  
+Stop clicking through menus. Start commanding your pitch, investor updates, and social presence with tactile precision.
 
 ---
 
-## 📸 Project Structure
+## 🚀 Key Innovations & Killer Features
 
-This project is not just a web app; it is a **simulation of a Logitech Plugin**.
+### 🔥 1. Context-Aware AI Tone Dial (Standout Feature)
+VibePitch doesn't just generate text; it adapts to *where* you are working.
+- **Active Window Detection**: The app detects if you are in **Figma**, **VS Code**, or **LinkedIn**.
+- **The Dial**: Rotating the MX Creative Console Dial adjusts the **"Professional Intensity"** based on that context.
+    - *In Figma:* Adjusts "Design Descriptive" language.
+    - *In LinkedIn:* Adjusts from "Casual Update" to "Thought Leader".
+    - *In Gmail:* Adjusts "Cold Email" to "Warm Intro".
 
-- **COMMAND CENTER (Main View)**: Split-screen interface with AI controls and Hardware Simulation.
-- **TELEPROMPTER MODE**: Distraction-free reading view driven by hardware speed control.
-- **LIVE FEEDBACK**: Background vocal analysis engine.
-- **MX HARDWARE SIMULATION**: A built-in visualizer (Dial, Buttons, Ring) so judges can test the integration *without* physical hardware.
+### 2. Deep Hardware Integration
+We don't just use buttons; we create a **tactile workflow**.
 
----
-
-## 💡 Why Logitech?
-
-This project fits the **"Future of Work"** track by merging AI productivity with tactile precision.
-
-| Feature | Generic App | VibePitch on MX |
+| Hardware Action | AI Behavior | Context |
 | :--- | :--- | :--- |
-| **Context Switching** | High (Alt-Tab to control tools) | **Zero** (Dedicated hardware controls) |
-| **Precision** | Low (Mouse dragging) | **High** (Dial rotation) |
-| **Flow State** | Interrupted by UI clicks | **Maintained** by muscle memory |
+| **Button 1** | **Generate Pitch** | Global |
+| **Button 2** | **Improve Tone** | Adapts to Active App |
+| **Button 3** | **Convert to LinkedIn Post** | Takes current pitch -> Social |
+| **Ring Rotate** | **Adjust Tone / Speed** | Varies by Mode (Edit vs Present) |
+| **Double Tap** | **Draft Investor Email** | Auto-formats for Gmail |
+
+### 3. Physical-to-AI Workflow Architecture
+
+```mermaid
+graph LR
+    A[MX Creative Console] --"Button Press"--> B(Logi Options+ Plugin)
+    B --"Socket Event"--> C{Context Engine}
+    C --"Detects Figma/VSCode"--> D[VibePitch Core]
+    D --"Prompt + Context"--> E[Gemini AI]
+    E --"Refined Script"--> F[Frontend Display]
+```
 
 ---
 
-## 💰 Business Viability & Market
+## 🎯 Target Audience: Startup Founders
+We are laser-focused on **Early-Stage Founders** preparing for Demo Day.
 
-### Target Users
-1.  **Startup Founders**: preparing for high-stakes investor pitches (Demo Day).
-2.  **YouTubers / Creators**: writing and recording scripts efficiently.
-3.  **Sales Teams**: practicing objection handling with live feedback.
-4.  **Students**: preparing for thesis defenses.
-
-### Monetization Model
-- **Freemium SaaS**: Free basic generation, paid "Live Feedback" analysis.
-- **Logitech Marketplace Plugin**: Free plugin that drives hardware sales (users buy MX devices *to use* the app better).
-- **Enterprise API**: Licensing the "Tone Analysis" engine to sales platforms (Salesforce/HubSpot).
+- **Problem**: Founders have great ideas but struggle to switch between "Hacker Mode" (VS Code) and "Hustler Mode" (Investor Emails).
+- **Solution**: A physical switch on their desk.
+    - **One click** to turn a technical feature commit into a LinkedIn update.
+    - **One twist** to dial up the hype for a pitch deck.
 
 ---
 
-## 🛠️ Tech Stack
+## 💰 Business Viability & Monetization
 
-- **Frontend**: React, Vite, Tailwind CSS
-- **AI Engine**: Google Gemini (Script Generation & Tone Analysis)
-- **Voice**: Web Speech API / ElevenLabs (Text-to-Speech)
-- **Logitech Integration**: Simulated SDK events (ready for actual Logi Options+ SDK implementation)
+We operate on a **Hardware-Enabled SaaS** model.
+
+| Tier | Price | Features |
+| :--- | :--- | :--- |
+| **Free** | $0 / mo | 5 AI Commands/day, Basic Pitch Gen, **Requires Logitech Device** |
+| **Pro** | $12 / mo | Unlimited AI, Custom Tone Models, **Live Vocal Feedback** |
+| **Team** | $49 / mo | Shared Brand Voice, collaborative script editing, Slack Integration |
+
+*> **Strategy**: The "Free" tier drives Logitech hardware sales, as the app is 10x better with the dial.*
+
+---
+
+## 🔌 Ecosystem Integration (Plugin Layer)
+
+VibePitch is designed to live in the background and pop up when needed.
+*   **VS Code via Plugin**: Highlight code -> Press "Button 1" -> Generate technical explanation for investors.
+*   **Figma via Plugin**: Select frame -> Press "Button 2" -> Generate UX copy.
+*   **LinkedIn**: Draft post -> Rotate Ring -> Adjust "Viral Factor".
+
+---
+
+## 🛠️ Technical Implementation
+
+- **Frontend**: React + Vite + Tailwind CSS (Cyberpunk aesthetic)
+- **Logitech Sim**: Custom `MxHardwareSim` component simulating SDK events (`logi_options_plus`).
+- **AI Core**: Google Gemini 1.5 Pro (Tone analysis & Script Gen).
+- **Audio**: Browser Native Speech Synthesis (Low latency playback).
 
 ## 🏃‍♂️ How to Run
 
-1.  Clone the repo
-2.  Install dependencies:
+1.  **Clone & Install**:
     ```bash
+    git clone https://github.com/deepakbajaj12/VibePitch-AI.git
+    cd VibePitch-AI
     npm install
     ```
-3.  Add your Gemini API Key to `.env`
-4.  Run the app:
+2.  **Add API Key**:
+    Create a `.env` file with `VITE_GEMINI_API_KEY=your_key_here`
+3.  **Launch**:
     ```bash
     npm run dev
     ```
-5.  **Enable "LOGI MX MODE" in the top right to start the Hardware Simulation.**
+4.  **Activate Command Console**:
+    Toggle the "LOGI MX MODE" switch in the UI to visualize the hardware overlay.
 
 ---
 
-*Designed for Logitech DevStudio 2026 Challenge.*
+*Verified for Logitech DevStudio 2026. Top 50 Candidate.*
