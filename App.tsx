@@ -91,7 +91,7 @@ const App: React.FC = () => {
       />
 
       {/* Header */}
-      <div className="text-center mb-12 space-y-4 max-w-2xl relative w-full z-10">
+      <div className="text-center mb-12 space-y-4 max-w-2xl relative w-full z-10 animate-in fade-in slide-in-from-top-4 duration-700">
         {/* Logitech MX Mode Toggle */}
         <div className="absolute top-0 right-0 flex items-center space-x-2 z-20">
            <span className={`text-xs font-bold ${!isMxMode ? 'text-indigo-400' : 'text-gray-600'}`}>WEB</span>
@@ -107,12 +107,10 @@ const App: React.FC = () => {
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight">
-          {isMxMode ? 'VibePitch Command Console' : 'VibePitch'} <span className="gradient-text">AI</span>
+          VibePitch <span className="gradient-text">Command Console</span>
         </h1>
         <p className="text-gray-400 text-lg">
-          {isMxMode 
-            ? 'Use your MX Creative Console to control your AI pitch workflow.' 
-            : 'Turn a single sentence into a high-vibe spoken script and audio clip in seconds.'}
+          VibePitch turns Logitech MX hardware into a <span className="text-indigo-400 font-semibold">context-aware</span> AI workflow engine.
         </p>
       </div>
 

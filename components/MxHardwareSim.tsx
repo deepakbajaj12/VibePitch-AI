@@ -87,8 +87,8 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
           onGenerate();
       }
       if (btnId === 2) addLog(`> AI Command: "Rewrite --tone=${activeContext === 'VS Code' ? 'Technical' : 'Professional'}"`);
-      if (btnId === 3) addLog(`> OS Action: Open URL (linkedin.com/post/new)`);
-      if (btnId === 4) addLog(`> OS Action: Mailto (investors@ycombinator.com)`);
+      if (btnId === 3) addLog(`> OS Action: Open URL (linkedin.com/post/new?text=...)`);
+      if (btnId === 4) addLog(`> OS Action: Mailto (subject=Investor Update&body=...)`);
   };
 
   return (
@@ -105,7 +105,7 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
             </h3>
             <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full animate-pulse shadow-lg ${pluginStatus === 'Active' ? 'bg-green-500 shadow-green-500/50' : 'bg-yellow-500'}`}></span>
-                <span className={`text-xs font-bold ${pluginStatus === 'Active' ? 'text-green-500' : 'text-yellow-500'}`}>{pluginStatus === 'Active' ? 'CONNECTED' : 'SYNCING...'}</span>
+                <span className={`text-xs font-bold ${pluginStatus === 'Active' ? 'text-green-500' : 'text-yellow-500'}`}>{pluginStatus === 'Active' ? 'CONNECTED (Simulated)' : 'SYNCING...'}</span>
             </div>
         </div>
         
@@ -113,7 +113,8 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
         <div className="bg-black/30 rounded-xl p-3 border border-gray-800 flex flex-col gap-2">
             <div className="flex items-center justify-between">
                 <div className="text-[10px] text-gray-500 font-mono leading-tight">
-                    ACTIVE APPLICATION<br/>
+                    CONTEXT DETECTION<br/>
+                    <span className="text-[8px] opacity-70">Simulated via Actions SDK</span><br/>
                     <span className={`font-bold text-sm ${
                         activeContext === 'VS Code' ? 'text-blue-400' : 
                         activeContext === 'Figma' ? 'text-pink-400' : 
