@@ -110,22 +110,43 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
         </div>
         
         {/* Context Awareness Section (Mock) */}
-        <div className="bg-black/30 rounded-xl p-3 border border-gray-800 flex items-center justify-between">
-            <div className="text-[10px] text-gray-500 font-mono">
-                Running in:<br/>
-                <span className="text-white font-bold text-sm">{activeContext}</span>
+        <div className="bg-black/30 rounded-xl p-3 border border-gray-800 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+                <div className="text-[10px] text-gray-500 font-mono leading-tight">
+                    ACTIVE APPLICATION<br/>
+                    <span className={`font-bold text-sm ${
+                        activeContext === 'VS Code' ? 'text-blue-400' : 
+                        activeContext === 'Figma' ? 'text-pink-400' : 
+                        activeContext === 'LinkedIn' ? 'text-blue-600' : 'text-red-400'
+                    }`}>{activeContext}</span>
+                </div>
+                <div className="flex gap-1">
+                    {[
+                        { name: 'VS Code', icon: '💻', color: 'bg-blue-900/40 border-blue-500/50 text-blue-300' },
+                        { name: 'Figma', icon: '🎨', color: 'bg-pink-900/40 border-pink-500/50 text-pink-300' },
+                        { name: 'LinkedIn', icon: '💼', color: 'bg-blue-800/40 border-blue-400/50 text-blue-200' },
+                        { name: 'Gmail', icon: '📧', color: 'bg-red-900/40 border-red-500/50 text-red-300' }
+                    ].map((app) => (
+                        <button 
+                            key={app.name}
+                            onClick={() => handleContextSwitch(app.name as any)}
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm border transition-all hover:scale-110 ${activeContext === app.name ? app.color + ' ring-2 ring-indigo-500/50 shadow-lg scale-105' : 'bg-gray-800 border-gray-700 text-gray-500 grayscale opacity-70 hover:opacity-100 hover:grayscale-0'}`}
+                            title={`Switch Context: ${app.name} Mode`}
+                        >
+                            {app.icon}
+                        </button>
+                    ))}
+                </div>
             </div>
-            <div className="flex gap-2">
-                {['VS Code', 'Figma', 'LinkedIn', 'Gmail'].map((app) => (
-                    <button 
-                        key={app}
-                        onClick={() => handleContextSwitch(app as any)}
-                        className={`w-6 h-6 rounded-md flex items-center justify-center text-[10px] border transition-all ${activeContext === app ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-gray-800 border-gray-700 text-gray-500 hover:bg-gray-700'}`}
-                        title={`Simulate Focus: ${app}`}
-                    >
-                        {app[0]}
-                    </button>
-                ))}
+            {/* Context Impact Description */}
+            <div className="text-[9px] font-mono text-gray-500 border-t border-gray-700/50 pt-2 flex items-center gap-2">
+                <span className="text-green-500">➜</span>
+                <span>
+                    {activeContext === 'VS Code' && "Mode: TECHNICAL PITCH (Scientific Tone)"}
+                    {activeContext === 'Figma' && "Mode: UX COPYWRITING (Creative Tone)"}
+                    {activeContext === 'LinkedIn' && "Mode: VIRAL POST (Startup Tone)"}
+                    {activeContext === 'Gmail' && "Mode: INVESTOR EMAIL (Pro Tone)"}
+                </span>
             </div>
         </div>
 
