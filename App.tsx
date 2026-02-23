@@ -164,6 +164,49 @@ const App: React.FC = () => {
                             onFillerWord={() => setFillerCount(c => c + 1)}
                         />
                     </div>
+
+                    {/* Logitech Actions SDK Tech Specs (Collapsible) */}
+                    <div className="mt-6 w-full max-w-md mx-auto">
+                        <details className="group bg-gray-900/40 border border-gray-800 rounded-xl overflow-hidden transition-all duration-300 open:bg-gray-900/80">
+                            <summary className="flex items-center justify-between p-4 cursor-pointer select-none text-xs font-mono uppercase tracking-widest text-gray-500 hover:text-indigo-400 transition-colors">
+                                <span>Logitech Actions SDK Mapping</span>
+                                <span className="transform group-open:rotate-180 transition-transform">▼</span>
+                            </summary>
+                            <div className="p-4 pt-0 text-xs font-mono text-gray-400 space-y-2 border-t border-gray-800/50 mt-2">
+                                <div className="flex justify-between items-center py-1 border-b border-gray-800/50">
+                                    <span className="text-indigo-400">Dial Rotate</span>
+                                    <span>Adjust AI Tone Intensity</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-gray-800/50">
+                                    <span className="text-indigo-400">Dial Press</span>
+                                    <span>Switch Context Mode</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-gray-800/50">
+                                    <span className="text-pink-400">Button 1</span>
+                                    <span>Generate Script</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-gray-800/50">
+                                    <span className="text-pink-400">Button 2</span>
+                                    <span>Improve Script</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-gray-800/50">
+                                    <span className="text-pink-400">Button 3</span>
+                                    <span>Publish to LinkedIn</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-gray-800/50">
+                                    <span className="text-purple-400">Actions Ring Swipe</span>
+                                    <span>Teleprompter Speed</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1">
+                                    <span className="text-purple-400">Double Tap</span>
+                                    <span>Export Investor Email</span>
+                                </div>
+                                <div className="mt-3 pt-2 text-[10px] text-gray-600 italic text-center">
+                                    * Mapped via logi_options_plus SDK v1.0
+                                </div>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             )}
         </div>
