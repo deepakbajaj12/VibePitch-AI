@@ -36,7 +36,10 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
   };
 
   React.useEffect(() => {
-    if (logsEndRef.current) logsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    // scrollIntoView causing page jump issues. Replaced with scrollTop logic.
+    if (logsEndRef.current && logsEndRef.current.parentElement) {
+        logsEndRef.current.parentElement.scrollTop = logsEndRef.current.parentElement.scrollHeight;
+    }
   }, [logs]);
 
   // Simulate active window detection
@@ -73,12 +76,19 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
   };
 
   const handleButtonPress = (btnId: number, label: string) => {
-      addLog(`Button ${btnId} Press: ${label}`);
-      // Simulate specialized logic based on button
-      if (btnId === 1) onGenerate(); // Button 1 is always Generate
-      if (btnId === 2) addLog(`AI Action: Improve Tone for ${activeContext}`);
-      if (btnId === 3) addLog(`AI Action: Convert to ${activeContext === 'LinkedIn' ? 'Post' : 'Summary'}`);
-      if (btnId === 4) addLog(`AI Action: Draft Investor Email from ${activeContext}`);
+      // Step 1: Log the event (Simulate SDK Event)
+      addLog(`⚡ MX Button ${btnId}: ${label}`);
+      setPluginStatus('Syncing');
+      setTimeout(() => setPluginStatus('Active'), 800);
+
+      // Step 2: Trigger Action
+      if (btnId === 1) {
+          addLog(`> Initiating Script Generation...`);
+          onGenerate();
+      }
+      if (btnId === 2) addLog(`> AI Command: "Rewrite --tone=${activeContext === 'VS Code' ? 'Technical' : 'Professional'}"`);
+      if (btnId === 3) addLog(`> OS Action: Open URL (linkedin.com/post/new)`);
+      if (btnId === 4) addLog(`> OS Action: Mailto (investors@ycombinator.com)`);
   };
 
   return (
