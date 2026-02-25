@@ -10,7 +10,7 @@
 
 ## 🧠 Architecture Overview
 
-`Logitech Dial` → `Actions SDK (Simulated)` → `Context Engine` → `Gemini API` → `Formatter` → `Output Panel`
+`Logitech Dial / Buttons` → `Actions SDK Layer (Simulated)` → `Context Engine` → `Gemini API` → `Output Formatter` → `UI Panel`
 
 ---
 
@@ -47,7 +47,7 @@ graph LR
 
 ## ⚡ How It Works
 
-1.  **Toggle Logic Mode**: Switch from "Web Mode" to "Logitech MX Mode" to visualize the hardware connection.
+1.  **Toggle Logitech Mode**: Switch from "Web Mode" to "Logitech MX Mode" to activate the hardware simulation layer.
 2.  **Select Context**: Click the simulated app icons (VS Code, Gmail, etc.) to tell the AI where you are working.
 3.  **Adjust Intensity**: Rotate the simulated **Dial** to change the vibe of your output.
 4.  **Execute Command**: Press **Button 1** to generate a script, email, or post instantly.
@@ -57,11 +57,11 @@ graph LR
 
 ## 🧩 Implementation Quality
 
-- **Real-time hardware event simulation**
-- **Context-sensitive AI formatting**
-- **Zero page reload UX**
-- **Event logging for SDK transparency**
-- **Fully deployed production build**
+- **Real-time hardware event simulation** via custom `MxHardwareSim` component.
+- **Context-sensitive AI formatting logic** (Email, LinkedIn, Technical Mode).
+- **Zero page reload**, fully reactive UI architecture.
+- **Event logging layer** for SDK transparency.
+- **Deployed production build** (Vercel).
 
 ---
 
@@ -77,7 +77,7 @@ We are laser-focused on **Early-Stage Founders** preparing for Demo Day.
 
 ## 💰 Business Viability & Monetization
 
-We operate on a **Hardware-Enabled SaaS** model.
+**VibePitch follows a Hardware-Enabled SaaS distribution model integrated with the Logitech Marketplace ecosystem.**
 
 | Tier | Price | Features |
 | :--- | :--- | :--- |
@@ -124,5 +124,7 @@ We operate on a **Hardware-Enabled SaaS** model.
     Toggle the "LOGI MX MODE" switch in the top right to start the Hardware Simulation.
 
 ---
+
+*VibePitch reimagines Logitech MX hardware not just as input devices — but as tactile AI control surfaces for the modern creator economy.*
 
 *Built for the Logitech DevStudio 2026 Challenge.*
