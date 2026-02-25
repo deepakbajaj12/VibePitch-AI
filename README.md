@@ -2,7 +2,7 @@
 
 **A Context-Aware AI Command Center for Logitech MX Creative Console**
 
-🔗 **Live Demo**: [https://vibepitch-ai.vercel.app](https://vibepitch-ai.vercel.app)
+🔗 **Live Demo**: [https://vibe-pitch-a68rx279k-deepak-bajajs-projects.vercel.app/](https://vibe-pitch-a68rx279k-deepak-bajajs-projects.vercel.app/)
 
 **VibePitch Command Console** transforms the **Logitech MX Creative Console** into a context-aware AI workflow engine for startup founders and creators. It enables physical control of pitch generation, tone adjustment, and investor communication directly from hardware inputs.
 
