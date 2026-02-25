@@ -115,6 +115,6 @@ We operate on a **Hardware-Enabled SaaS** model.
 4.  **Activate Command Console**:
     Toggle the "LOGI MX MODE" switch in the top right to start the Hardware Simulation.
 
--Built for the Logitech DevStudio 2026 Challeng
+---
 
-*Verified for Logitech DevStudio 2026. Top 50 Candidate.*
+*Built for the Logitech DevStudio 2026 Challenge.*
