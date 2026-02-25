@@ -1,8 +1,16 @@
 # 🔥 VibePitch Command Console
 
-**Logitech MX Hardware AI Command Center**
+**A Context-Aware AI Command Center for Logitech MX Creative Console**
+
+🔗 **Live Demo**: [https://vibepitch-ai.vercel.app](https://vibepitch-ai.vercel.app)
 
 **VibePitch Command Console** transforms the **Logitech MX Creative Console** into a context-aware AI workflow engine for startup founders and creators. It enables physical control of pitch generation, tone adjustment, and investor communication directly from hardware inputs.
+
+---
+
+## 🧠 Architecture Overview
+
+`Logitech Dial` → `Actions SDK (Simulated)` → `Context Engine` → `Gemini API` → `Formatter` → `Output Panel`
 
 ---
 
@@ -10,7 +18,7 @@
 
 ### 🔥 1. Context-Aware AI Tone Dial (Standout Feature)
 VibePitch demonstrates how hardware adapts to *where* you are working.
-- **Simulated Active Window Context**: The interface demonstrates how the **Logitech Actions SDK** can detect active applications such as **VS Code**, **Figma**, or **LinkedIn**.
+- **Simulated Active Window Context**: The interface simulates how the **Logitech Actions SDK** could detect active applications such as **VS Code**, **Figma**, **LinkedIn**, or **Gmail**.
 - **The Dial**: Rotating the MX Creative Console Dial adjusts the **"Professional Intensity"** based on that context.
     - *In Figma:* Adjusts "Design Descriptive" language.
     - *In LinkedIn:* Adjusts from "Casual Update" to "Thought Leader".
