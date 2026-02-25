@@ -11,6 +11,8 @@ interface MxHardwareSimProps {
   setTeleprompterSpeed: (val: number) => void;
   toggleTeleprompter: () => void;
   isTeleprompterActive: boolean;
+  activeContext: string;
+  setActiveContext: (ctx: string) => void;
 }
 
 const MxHardwareSim: React.FC<MxHardwareSimProps> = ({ 
@@ -22,12 +24,13 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
   teleprompterSpeed,
   setTeleprompterSpeed,
   toggleTeleprompter,
-  isTeleprompterActive
+  isTeleprompterActive,
+  activeContext,
+  setActiveContext
 }) => {
   const [logs, setLogs] = React.useState<string[]>([]);
   const logsEndRef = React.useRef<HTMLDivElement>(null);
-  const [activeContext, setActiveContext] = useState<'VS Code' | 'Figma' | 'LinkedIn' | 'Gmail'>('VS Code');
-
+  
   // New states for "Plugin Layer"
   const [pluginStatus, setPluginStatus] = useState<'Active' | 'Syncing'>('Active');
 
@@ -42,8 +45,7 @@ const MxHardwareSim: React.FC<MxHardwareSimProps> = ({
     }
   }, [logs]);
 
-  // Simulate active window detection
-  const handleContextSwitch = (app: 'VS Code' | 'Figma' | 'LinkedIn' | 'Gmail') => {
+  const handleContextSwitch = (app: string) => {
       setActiveContext(app);
       setPluginStatus('Syncing');
       

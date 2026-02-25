@@ -18,6 +18,7 @@ const App: React.FC = () => {
   const [idea, setIdea] = useState('');
   const [style, setStyle] = useState<PitchStyle>(PitchStyle.STARTUP);
   const [intensity, setIntensity] = useState(50);
+  const [activeContext, setActiveContext] = useState<string>('VS Code');
   
   // Teleprompter State (Logitech Actions Ring)
   const [teleprompterSpeed, setTeleprompterSpeed] = useState(2.0);
@@ -37,8 +38,8 @@ const App: React.FC = () => {
     setResult(null);
 
     try {
-      // Step 1: Generate the script
-      const script = await generatePitchScript(idea, style, intensity);
+      // Step 1: Generate the script (passing context)
+      const script = await generatePitchScript(idea, style, intensity, activeContext);
       
       // Step 2: Generate the audio
       const audioBlob = await generateSpeech(script, style);
@@ -151,6 +152,8 @@ const App: React.FC = () => {
                         setTeleprompterSpeed={setTeleprompterSpeed}
                         toggleTeleprompter={handleToggleTeleprompter}
                         isTeleprompterActive={isTeleprompterActive}
+                        activeContext={activeContext}
+                        setActiveContext={(ctx) => setActiveContext(ctx)}
                     />
                     
                     {/* Live Feedback Mini-View when Teleprompter is NOT fullscreen but active in background or always on */}

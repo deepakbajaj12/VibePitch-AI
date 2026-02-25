@@ -76,7 +76,7 @@ async function getBestTextModel(): Promise<string> {
   }
 }
 
-export async function generatePitchScript(idea: string, style: PitchStyle, intensity: number = 50): Promise<string> {
+export async function generatePitchScript(idea: string, style: PitchStyle, intensity: number = 50, context?: string): Promise<string> {
   const stylePrompts = {
     [PitchStyle.STARTUP]: "Professional, visionary, and energetic. Focus on the 'problem/solution' narrative. Use terms like 'scalability', 'innovation', and 'future'.",
     [PitchStyle.GAME_TRAILER]: "Epic, cinematic, and dramatic. Use intense pauses, heavy adjectives, and a 'coming soon' vibe. Imagine a movie trailer voice.",
@@ -90,11 +90,34 @@ export async function generatePitchScript(idea: string, style: PitchStyle, inten
     : intensity > 20 ? "Calm, slow and deliberate"
     : "Very calm, soft-spoken and ASMR-like";
 
-  const prompt = `Turn this idea into a 30-40 second natural spoken script (approx 60-80 words): "${idea}". 
-  Style: ${style}.
-  Vibe Intensity: ${intensity}% (${intensityDesc}).
-  Instruction: ${stylePrompts[style]}.
-  Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
+  let prompt = '';
+
+  if (context === 'Gmail') {
+     // Specific Mode for email generation
+     prompt = `Write a professional investor update email based on this core idea/update: "${idea}".
+     Requirements:
+     - Subject Line: Catchy but professional.
+     - Greeting: Formal (e.g., "Hi [Investor Name],").
+     - Body: Clear bullet points on progress.
+     - Tone: ${intensityDesc} (from 'Polite' to 'Excited').
+     - Closing: Professional sign-off.
+     - NO placeholders like [Your Name]. Use 'The VibePitch Team'.`;
+  } else if (context === 'LinkedIn') {
+     prompt = `Write a viral LinkedIn post about this topic: "${idea}".
+     Requirements:
+     - Hook: First line must be grabby.
+     - Structure: Short paragraphs, easy to read.
+     - Tone: ${intensityDesc} (Professional Thought Leader).
+     - Ending: Engaging question.
+     - Hashtags: Include 3-5 relevant tags.`;
+  } else {
+     // Default Pitch Script Mode
+     prompt = `Turn this idea into a 30-40 second natural spoken script (approx 60-80 words): "${idea}". 
+     Style: ${style}.
+     Vibe Intensity: ${intensity}% (${intensityDesc}).
+     Instruction: ${stylePrompts[style]}.
+     Rules: No bullet points. Use only natural spoken language. Do not include stage directions like [Music Fades In]. Just the text to be spoken.`;
+  }
 
   // Dynamically find a working model
   const modelName = await getBestTextModel();
