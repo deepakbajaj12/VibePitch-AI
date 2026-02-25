@@ -1,22 +1,22 @@
-# 🔥 VibePitch Command Console
+# VibePitch Command Console
 
 **A Context-Aware AI Command Center for Logitech MX Creative Console**
 
 🔗 **Live Demo**: [https://vibe-pitch-a68rx279k-deepak-bajajs-projects.vercel.app/](https://vibe-pitch-a68rx279k-deepak-bajajs-projects.vercel.app/)
 
-**VibePitch Command Console** transforms the **Logitech MX Creative Console** into a context-aware AI workflow engine for startup founders and creators. It enables physical control of pitch generation, tone adjustment, and investor communication directly from hardware inputs.
+**VibePitch Command Console** transforms the **Logitech MX Creative Console** into a context-aware AI workflow engine. It enables physical control of pitch generation, tone adjustment, and investor communication through tactile hardware interactions.
 
 ---
 
-## 🧠 Architecture Overview
+## Architecture Overview
 
 `Logitech Dial / Buttons` → `Actions SDK Layer (Simulated)` → `Context Engine` → `Gemini API` → `Output Formatter` → `UI Panel`
 
 ---
 
-## 🚀 Key Innovations & Killer Features
+## Key Innovations & Killer Features
 
-### 🔥 1. Context-Aware AI Tone Dial (Standout Feature)
+### 1. Context-Aware AI Tone Dial (Standout Feature)
 VibePitch demonstrates how hardware adapts to *where* you are working.
 - **Simulated Active Window Context**: The interface simulates how the **Logitech Actions SDK** could detect active applications such as **VS Code**, **Figma**, **LinkedIn**, or **Gmail**.
 - **The Dial**: Rotating the MX Creative Console Dial adjusts the **"Professional Intensity"** based on that context.
@@ -45,7 +45,7 @@ graph LR
 
 ---
 
-## ⚡ How It Works
+## How It Works
 
 1.  **Toggle Logitech Mode**: Switch from "Web Mode" to "Logitech MX Mode" to activate the hardware simulation layer.
 2.  **Select Context**: Click the simulated app icons (VS Code, Gmail, etc.) to tell the AI where you are working.
@@ -53,9 +53,11 @@ graph LR
 4.  **Execute Command**: Press **Button 1** to generate a script, email, or post instantly.
 5.  **Present Live**: Use the **Actions Ring** simulator to control the teleprompter speed in real-time.
 
+*Each hardware interaction is logged in real-time, simulating the behavior of the Logitech Actions SDK event layer.*
+
 ---
 
-## 🧩 Implementation Quality
+## Implementation Quality
 
 - **Real-time hardware event simulation** via custom `MxHardwareSim` component.
 - **Context-sensitive AI formatting logic** (Email, LinkedIn, Technical Mode).
@@ -65,7 +67,7 @@ graph LR
 
 ---
 
-## 🎯 Target Audience: Startup Founders
+## Target Audience: Startup Founders
 We are laser-focused on **Early-Stage Founders** preparing for Demo Day.
 
 - **Problem**: Founders have great ideas but struggle to switch between "Hacker Mode" (VS Code) and "Hustler Mode" (Investor Emails).
@@ -75,7 +77,7 @@ We are laser-focused on **Early-Stage Founders** preparing for Demo Day.
 
 ---
 
-## 💰 Business Viability & Monetization
+## Business Viability & Monetization
 
 **VibePitch follows a Hardware-Enabled SaaS distribution model integrated with the Logitech Marketplace ecosystem.**
 
@@ -91,22 +93,22 @@ We are laser-focused on **Early-Stage Founders** preparing for Demo Day.
 
 ---
 
-## 🔮 Future Roadmap
+## Future Roadmap
 
-- **Full SDK Integration**: Replacing the simulation layer with actual `logi_options_plus` WebSocket bindings.
+- **Full SDK Integration**: Replacing the simulation layer with real Logitech Actions SDK event bindings via Logi Options+ integration.
 - **Custom Macros**: Letting users map their own Logitech buttons to specific AI prompts.
 - **Marketplace Plugin**: Packaging VibePitch as a downloadable profile in the Logi Options+ Marketplace.
 
 ---
 
-## 🛠️ Technical Implementation
+## Technical Implementation
 
 - **Frontend**: React + Vite + Tailwind CSS (Cyberpunk aesthetic)
 - **Logitech Sim**: Custom `MxHardwareSim` component simulating SDK events.
 - **AI Core**: Google Gemini 1.5 Pro (Tone analysis & Script Gen).
 - **Audio**: Browser Native Speech Synthesis (Low latency playback).
 
-## 🏃‍♂️ How to Run
+## How to Run
 
 1.  **Clone & Install**:
     ```bash
